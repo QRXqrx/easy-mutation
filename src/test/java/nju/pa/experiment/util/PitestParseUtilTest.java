@@ -1,6 +1,6 @@
 package nju.pa.experiment.util;
 
-import nju.pa.experiment.data.MutantInfo;
+import nju.pa.experiment.data.mutation.MutantInfo;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -63,9 +63,9 @@ public class PitestParseUtilTest {
                 try {
                     Document doc = Jsoup.parse(report, UTF8);
 
-                    // Get className
+                    // Get fileName
                     String className = doc.select("h1").get(0).ownText();
-                    System.out.println("className: " + className);
+                    System.out.println("fileName: " + className);
 
                     // Locate all mutants
                     Element trContainsMutations = doc.select("h2").get(0).parent().parent();

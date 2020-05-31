@@ -1,4 +1,4 @@
-package nju.pa.experiment.data;
+package nju.pa.experiment.data.mutation;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.AllArgsConstructor;
@@ -17,13 +17,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class MutatedClassInfo {
+public class MutatedFileInfo {
 
     @JSONField
     private String packageInfo;
 
     @JSONField(ordinal = 1)
-    private String className;
+    private String fileName;
 
     /**
      * Record the number of generated mutants of this class.

@@ -1,4 +1,4 @@
-package nju.pa.experiment.data;
+package nju.pa.experiment.data.mutation;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * This class indicate parse result. Can be transferred into json, xml formats
+ * This class indicate mutation result. Can be transferred into json, xml formats
  *
  * @author QRX
  * @email QRXwzx@outlook.com
@@ -52,7 +52,7 @@ public class MutationResult {
      * Record parsing result for each mutated class. Grouped by Class.
      */
     @JSONField(ordinal = 4)
-    private List<MutatedClassInfo> mutatedClassInfos;
+    private List<MutatedFileInfo> mutatedFileInfos;
 
 
 }

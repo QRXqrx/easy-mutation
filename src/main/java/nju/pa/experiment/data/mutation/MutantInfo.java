@@ -1,4 +1,4 @@
-package nju.pa.experiment.data;
+package nju.pa.experiment.data.mutation;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.AllArgsConstructor;

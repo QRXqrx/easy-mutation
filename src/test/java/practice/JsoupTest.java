@@ -1,9 +1,7 @@
 package practice;
 
 import lombok.Data;
-import nju.pa.experiment.data.MutantInfo;
 import nju.pa.experiment.util.IOUtil;
-import nju.pa.experiment.util.PitestParseUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.NotDirectoryException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Learn how to use jsoup.
@@ -47,9 +44,9 @@ public class JsoupTest {
                 try {
                     Document doc = Jsoup.parse(report, UTF8);
 
-                    // Get className
+                    // Get fileName
                     String className = doc.select("h1").get(0).ownText();
-                    System.out.println("className: " + className);
+                    System.out.println("fileName: " + className);
 
                     // Locate all mutants
                     Element trContainsMutations = doc.select("h2").get(0).parent().parent();

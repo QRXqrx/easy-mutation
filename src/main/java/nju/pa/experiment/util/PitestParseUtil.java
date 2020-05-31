@@ -1,8 +1,8 @@
 package nju.pa.experiment.util;
 
-import nju.pa.experiment.data.MutantInfo;
-import nju.pa.experiment.data.MutatedClassInfo;
-import nju.pa.experiment.data.MutationResult;
+import nju.pa.experiment.data.mutation.MutantInfo;
+import nju.pa.experiment.data.mutation.MutatedFileInfo;
+import nju.pa.experiment.data.mutation.MutationResult;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 
 /**
- * This class provides static methods which can parse pitest reports generated
+ * This class provides static methods which can mutation pitest reports generated
  * by pitest plugin.
  *
  * @author QRX
@@ -69,27 +69,27 @@ public class PitestParseUtil {
             // Parse information from class report.
             // Locate report directory.
             File reportDir = summaryReport.getParentFile();
-            List<MutatedClassInfo> mutatedClassInfos = generateClassReports(reportDir);
+            List<MutatedFileInfo> mutatedFileInfos = generateClassReports(reportDir);
 
             // Set mutation result.
             mutationResult.setNumberOfClasses(numberOfClasses);
             mutationResult.setCoveragePercentage(coveragePercent);
             mutationResult.setCoverageRatio(coverageRatio);
-            mutationResult.setMutatedClassInfos(mutatedClassInfos);
+            mutationResult.setMutatedFileInfos(mutatedFileInfos);
             mutationResult.setReportDir(reportDir.getAbsolutePath());
 
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Parse failed, in method parse");
+            System.out.println("Parse failed, in method mutation");
         }
 
         return mutationResult;
     }
 
-    private static List<MutatedClassInfo> generateClassReports(File reportDir) throws NotDirectoryException {
+    private static List<MutatedFileInfo> generateClassReports(File reportDir) throws NotDirectoryException {
 
-        List<MutatedClassInfo> mutatedClassInfos = new ArrayList<>();
+        List<MutatedFileInfo> mutatedFileInfos = new ArrayList<>();
 
         List<File> packageDirs = IOUtil.listFilesOrEmpty(reportDir).stream()
                 .filter(File::isDirectory).collect(Collectors.toList());
@@ -103,14 +103,14 @@ public class PitestParseUtil {
 
             // Parse class report
             for (File classReport : classReports)
-                mutatedClassInfos.add(parseClassReport(classReport, packageInfo));
+                mutatedFileInfos.add(parseClassReport(classReport, packageInfo));
         }
 
-        return mutatedClassInfos;
+        return mutatedFileInfos;
     }
 
 
-    public static MutatedClassInfo parseClassReport(String classReportPath, String packageInfo) {
+    public static MutatedFileInfo parseClassReport(String classReportPath, String packageInfo) {
         return parseClassReport(new File(classReportPath), packageInfo);
     }
 
@@ -119,12 +119,12 @@ public class PitestParseUtil {
      * The name of the pitest report is like: "RedBlackTree.java.html"
      *
      * @param classReport A File instance of a class pitest report.
-     * @return An instance of MutatedClassInfo
+     * @return An instance of MutatedFileInfo
      *
-     * @see MutatedClassInfo
+     * @see MutatedFileInfo
      */
-    public static MutatedClassInfo parseClassReport(File classReport, String packageInfo) {
-        MutatedClassInfo mutatedClassInfo = new MutatedClassInfo();
+    public static MutatedFileInfo parseClassReport(File classReport, String packageInfo) {
+        MutatedFileInfo mutatedFileInfo = new MutatedFileInfo();
 
         try {
             Document doc = Jsoup.parse(classReport, UTF8);
@@ -147,17 +147,17 @@ public class PitestParseUtil {
             }
 
             // Set mutated class information.
-            mutatedClassInfo.setPackageInfo(packageInfo);
-            mutatedClassInfo.setClassName(IOUtil.simpleName(classReport));
-            mutatedClassInfo.setNumberOfMutants(numberOfMutants);
-            mutatedClassInfo.setMutantInfos(mutantInfos);
+            mutatedFileInfo.setPackageInfo(packageInfo);
+            mutatedFileInfo.setFileName(IOUtil.simpleName(classReport));
+            mutatedFileInfo.setNumberOfMutants(numberOfMutants);
+            mutatedFileInfo.setMutantInfos(mutantInfos);
 
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Parse failed, in method parseClassReport");
         }
 
-        return mutatedClassInfo;
+        return mutatedFileInfo;
     }
 
 
